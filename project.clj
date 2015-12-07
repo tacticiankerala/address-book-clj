@@ -57,13 +57,13 @@
                                                 :compiler {
                                                            :source-map-timestamp true
                                                            }}}}}
-             :prod {
-                    :env {:production true}
-                    :hooks [leiningen.cljsbuild]
-                    :omit-source true
-                    :aot :all
-                    :main address-book.server
-                    :cljsbuild { :builds { :app {
-                                                 :compiler {
-                                                            :optimizations :advanced
-                                                            :pretty-print false}}}}}})
+             :uberjar {
+                       :env {:production true}
+                       :hooks [leiningen.cljsbuild]
+                       :omit-source true
+                       :aot :all
+                       :main address-book.server
+                       :cljsbuild { :builds { :app {
+                                                    :compiler {
+                                                               :optimizations :advanced
+                                                               :pretty-print false}}}}}})

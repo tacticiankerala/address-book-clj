@@ -11,6 +11,6 @@ Usage
 - then visit `http://localhost:8080`
 
 ###Production
-- `lein with-profile prod clean`
-- `lein with-profile prod uberjar`
+- `lein clean`
+- `lein uberjar`
 - run `java -jar target/address-book.jar`
