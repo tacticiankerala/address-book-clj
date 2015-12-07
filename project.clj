@@ -23,6 +23,8 @@
 
   :min-lein-version "2.5.0"
 
+  :env {:port "8080"}
+
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
 
   :uberjar-name "address-book.jar"
