@@ -1,0 +1,6 @@
+.DS_Store
+figwheel_server.log
+.lein-env
+.lein-repl-history
+target/
+resources/public/js/compiled/
