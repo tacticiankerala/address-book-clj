@@ -25,7 +25,7 @@
 
   :env {:port "8080"}
 
-  :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
+  :clean-targets ^{:protect false} ["resources/public/js/compiled" "resources/private/js/compiled" "target"]
 
   :uberjar-name "address-book.jar"
 
@@ -45,20 +45,20 @@
                                         }}}}
 
   :profiles {
-             :dev {
-                   :dependencies [[ring/ring-devel  "1.4.0"]
-                                  [org.clojure/tools.nrepl "0.2.11"]]
-                   :env {:dev true}
-                   :plugins [[lein-figwheel "0.5.0-2"]]
-                   :cljsbuild { :builds { :app {
-                                                :figwheel {
-                                                           :http-server-root "public"
-                                                           :css-dirs ["resources/public/css"]
-                                                           :on-jsload "address-book.core/mount-root"
-                                                           }
-                                                :compiler {
-                                                           :source-map-timestamp true
-                                                           }}}}}
+             :dev     {
+                       :dependencies [[ring/ring-devel  "1.4.0"]
+                                      [org.clojure/tools.nrepl "0.2.11"]]
+                       :env {:dev true}
+                       :plugins [[lein-figwheel "0.5.0-2"]]
+                       :cljsbuild { :builds { :app {
+                                                    :figwheel {
+                                                               :http-server-root "public"
+                                                               :css-dirs ["resources/public/css"]
+                                                               :on-jsload "address-book.core/mount-root"
+                                                               }
+                                                    :compiler {
+                                                               :source-map-timestamp true
+                                                               }}}}}
              :uberjar {
                        :env {:production true}
                        :hooks [leiningen.cljsbuild]
@@ -68,4 +68,22 @@
                        :cljsbuild { :builds { :app {
                                                     :compiler {
                                                                :optimizations :advanced
-                                                               :pretty-print false}}}}}})
+                                                               :pretty-print false}}}}}
+             :test    {
+                       :dependencies [[speclj "3.3.0"]]
+                       :plugins      [[speclj "3.3.0"]]
+                       :test-paths   ["spec/clj"]
+                       :env          {:test true}
+                       :cljsbuild    { :builds       { :app {
+                                                             :source-paths   ["src/cljs" "spec/cljs"]
+                                                             :compiler       {
+                                                                              :output-to     "resources/private/js/compiled/unit-test.js"
+                                                                              :output-dir    "resources/private/js/compiled/out"
+                                                                              :asset-path    "js/compiled/out"
+                                                                              :optimizations :whitespace ;;:none requires more complex setup, at least in the browser
+                                                                              :pretty-print  true
+                                                                              }}}
+                                      :test-commands { "test" ["phantomjs"
+                                                               "resources/private/js/phantomjs-runner.js"
+                                                               "resources/private/js/compiled/unit-test.js"
+                                                               ]}}}})
