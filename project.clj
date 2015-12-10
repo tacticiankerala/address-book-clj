@@ -13,7 +13,13 @@
                  [ring/ring-jetty-adapter  "1.4.0"]
                  [ring/ring-defaults "0.1.5"]
                  [compojure "1.4.0"]
+
                  [environ "1.0.1"]
+
+                 [org.postgresql/postgresql "9.4-1201-jdbc41"]
+                 [korma "0.4.0"]
+                 [migratus "0.8.8"]
+
                  [reagent "0.5.1"]
                  [re-frame "0.5.0"]
                  [secretary "1.2.3"]]
@@ -23,7 +29,15 @@
 
   :min-lein-version "2.5.0"
 
-  :env {:port "8080"}
+  :env {
+        :port        "8080"
+
+        :db-user     "sreenath"
+        :db-password ""
+        :db-host     "localhost"
+        :db-port     "5432"
+        :database    "address-book-dev"
+        }
 
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "resources/private/js/compiled" "target"]
 
@@ -48,17 +62,18 @@
              :dev     {
                        :dependencies [[ring/ring-devel  "1.4.0"]
                                       [org.clojure/tools.nrepl "0.2.11"]]
-                       :env {:dev true}
-                       :plugins [[lein-figwheel "0.5.0-2"]]
-                       :cljsbuild { :builds { :app {
-                                                    :figwheel {
-                                                               :http-server-root "public"
-                                                               :css-dirs ["resources/public/css"]
-                                                               :on-jsload "address-book.core/mount-root"
-                                                               }
-                                                    :compiler {
-                                                               :source-map-timestamp true
-                                                               }}}}}
+                       :env          {:dev true}
+                       :plugins      [[lein-figwheel "0.5.0-2"]
+                                      [migratus-lein "0.2.0"]]
+                       :cljsbuild    { :builds { :app {
+                                                       :figwheel {
+                                                                  :http-server-root "public"
+                                                                  :css-dirs ["resources/public/css"]
+                                                                  :on-jsload "address-book.core/mount-root"
+                                                                  }
+                                                       :compiler {
+                                                                  :source-map-timestamp true
+                                                                  }}}}}
              :uberjar {
                        :env {:production true}
                        :hooks [leiningen.cljsbuild]

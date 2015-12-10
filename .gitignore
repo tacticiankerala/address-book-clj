@@ -8,3 +8,4 @@ resources/private/js/compiled/
 .lein-failures
 .repl-phantom-err
 .repl-phantom-out
+/.nrepl-port
